@@ -1,0 +1,549 @@
+/* Screen styles follow Apple's Human Interface Guidelines: system type that follows the reader's
+   text size, an inset grouped form, 44-point targets, system-like colours in light and dark, and
+   no motion when the reader asks for less. The printed card further down has its own rules. */
+
+:root {
+  --bg: #f2f2f7;
+  --cell: #ffffff;
+  --label: #000000;
+  --secondary: #6b6b70;
+  --separator: #c6c6c8;
+  --tint: #1f7a35;
+  --tint-fill: #1f7a35;
+  --on-tint: #ffffff;
+  --track: rgb(118 118 128 / 0.12);
+  --thumb: #ffffff;
+  --body: 1.0625rem;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000;
+    --cell: #1c1c1e;
+    --label: #ffffff;
+    --secondary: #98989f;
+    --separator: #38383a;
+    --tint: #30d158;
+    --track: rgb(118 118 128 / 0.24);
+    --thumb: #636366;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --cell: #1c1c1e;
+  --label: #ffffff;
+  --secondary: #98989f;
+  --separator: #38383a;
+  --tint: #30d158;
+  --track: rgb(118 118 128 / 0.24);
+  --thumb: #636366;
+  color-scheme: dark;
+}
+
+/* Safari: 1rem becomes the reader's own Dynamic Type size. */
+@supports (font: -apple-system-body) {
+  html {
+    font: -apple-system-body;
+  }
+  :root {
+    --body: 1rem;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--label);
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--body);
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+}
+main {
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 48px max(16px, env(safe-area-inset-left));
+}
+.column {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+a {
+  color: var(--tint);
+}
+:focus-visible {
+  outline: 3px solid var(--tint);
+  outline-offset: 2px;
+}
+
+/* Large title and a plain sentence under it. */
+.masthead h1 {
+  margin: 0.6em 0 0.2em;
+  font-size: calc(var(--body) * 2);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.011em;
+}
+.masthead p {
+  margin: 0 0 1.5rem;
+  color: var(--secondary);
+}
+
+/* Inset grouped list. */
+.inset-title {
+  margin: 1.4rem 16px 0.45rem;
+  font-size: calc(var(--body) * 0.765);
+  font-weight: 400;
+  color: var(--secondary);
+}
+.inset {
+  background: var(--cell);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.inset-footer {
+  margin: 0.45rem 16px 0;
+  font-size: calc(var(--body) * 0.765);
+  color: var(--secondary);
+}
+.inset-footer:empty {
+  display: none;
+}
+.cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  background: var(--cell);
+  color: var(--label);
+  font: inherit;
+  text-align: left;
+}
+.cell + .cell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 0;
+  border-top: 1px solid var(--separator);
+  transform: scaleY(0.5);
+  transform-origin: top;
+}
+.cell > label,
+.cell > span {
+  flex: 0 0 auto;
+}
+.cell input[type="text"],
+.cell input[type="date"],
+.cell select {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--secondary);
+  font: inherit;
+  text-align: right;
+}
+.cell input[type="text"] {
+  color: var(--label);
+  text-align: left;
+}
+.cell input::placeholder {
+  color: var(--secondary);
+}
+.cell input:focus-visible,
+.cell select:focus-visible {
+  outline: none;
+}
+.cell:focus-within {
+  box-shadow: inset 0 0 0 2px var(--tint);
+}
+.cell input[type="date"]::-webkit-date-and-time-value {
+  text-align: right;
+}
+.cell select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 18px;
+  background: no-repeat right center / 10px 16px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 16'%3E%3Cpath d='M1.5 6 5 2.5 8.5 6M1.5 10 5 13.5 8.5 10' fill='none' stroke='%238e8e93' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  text-align-last: right;
+  cursor: pointer;
+}
+.cell select option {
+  color: initial;
+}
+
+/* A row that acts: tinted text, full-width target, a quiet press state. */
+button.cell-button {
+  border: 0;
+  cursor: pointer;
+}
+button.cell-button.tinted {
+  color: var(--tint);
+}
+button.cell-button svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: currentColor;
+}
+button.cell-button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--tint);
+}
+button.cell-button:active {
+  background: var(--track);
+}
+button.cell-button.chevron::after {
+  content: "";
+  margin-left: auto;
+  width: 8px;
+  height: 13px;
+  flex: none;
+  background: no-repeat center / contain
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='m1.5 1.5 5 5-5 5' fill='none' stroke='%238e8e93' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Segmented control for °F / °C. The radio covers its whole segment, so the target is the segment. */
+.segmented {
+  margin-left: auto;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  min-width: 7.5rem;
+  padding: 2px;
+  border-radius: 9px;
+  background: var(--track);
+}
+.segmented label {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 7px;
+  font-size: calc(var(--body) * 0.88);
+  font-weight: 500;
+}
+.segmented input {
+  position: absolute;
+  inset: -4px 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.segmented label:has(input:checked) {
+  background: var(--thumb);
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.12), 0 3px 1px rgb(0 0 0 / 0.04);
+}
+.segmented label:has(input:focus-visible) {
+  outline: 3px solid var(--tint);
+  outline-offset: 1px;
+}
+
+/* Buttons. */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1.6rem;
+}
+button.filled,
+button.plain {
+  font: inherit;
+  font-size: var(--body);
+  cursor: pointer;
+  border: 0;
+}
+button.filled {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: var(--tint-fill);
+  color: var(--on-tint);
+  font-weight: 600;
+}
+button.plain {
+  min-height: 44px;
+  padding: 0 16px;
+  background: none;
+  color: var(--tint);
+}
+button.filled:active,
+button.plain:active {
+  opacity: 0.7;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: progress;
+}
+
+/* Progress and other matches. */
+.progress {
+  margin-top: 0.8rem;
+}
+#status {
+  margin: 0 16px;
+  min-height: 1.35em;
+  font-size: calc(var(--body) * 0.88);
+  color: var(--secondary);
+}
+progress {
+  display: block;
+  width: calc(100% - 32px);
+  height: 4px;
+  margin: 10px 16px 0;
+  border: 0;
+  border-radius: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--track);
+  color: var(--tint);
+  accent-color: var(--tint);
+}
+progress::-webkit-progress-bar {
+  background: var(--track);
+  border-radius: 2px;
+}
+progress::-webkit-progress-value {
+  background: var(--tint);
+  border-radius: 2px;
+}
+progress::-moz-progress-bar {
+  background: var(--tint);
+  border-radius: 2px;
+}
+#actions {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* About. */
+.about {
+  margin-top: 2rem;
+  font-size: calc(var(--body) * 0.88);
+  color: var(--secondary);
+}
+.about h2 {
+  margin: 0 0 0.4em;
+  font-size: calc(var(--body) * 1.18);
+  font-weight: 600;
+  color: var(--label);
+}
+.about p {
+  margin: 0 0 0.8em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ---------- the card: always ink on paper, on screen and in print ---------- */
+
+#output {
+  overflow-x: auto;
+}
+.card {
+  color-scheme: light;
+  background: #fff;
+  color: #111;
+  width: 100%;
+  max-width: 8.5in;
+  margin: 0 auto;
+  padding: 0.45in 0.5in 0.35in;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15), 0 8px 24px rgb(0 0 0 / 0.12);
+  font: 9.5pt/1.32 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+.card p {
+  margin: 0;
+}
+.card header {
+  border-bottom: 1.5pt solid #111;
+  padding-bottom: 6pt;
+  margin-bottom: 6pt;
+}
+.card .brand {
+  font: 700 7.5pt/1 system-ui, sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.card .title {
+  margin: 3pt 0 0;
+  font-size: 19pt;
+  line-height: 1.1;
+}
+.card .region,
+.card .when {
+  font-size: 9pt;
+}
+.card .weather {
+  margin-top: 3pt;
+  font-size: 9pt;
+}
+.card .lead {
+  font-style: italic;
+  margin-bottom: 6pt;
+}
+.lists {
+  columns: 2;
+  column-gap: 0.3in;
+}
+.group h3 {
+  font: 700 8pt/1 system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 4pt 0 4pt;
+  break-after: avoid;
+}
+.group .note {
+  font-size: 8pt;
+  font-weight: 700;
+  margin-bottom: 4pt;
+}
+.group ul {
+  list-style: none;
+  margin: 0 0 4pt;
+  padding: 0;
+}
+.entry {
+  display: grid;
+  grid-template-columns: 11pt 1fr;
+  gap: 5pt;
+  margin-bottom: 5pt;
+  break-inside: avoid;
+}
+.box {
+  width: 9pt;
+  height: 9pt;
+  border: 1.1pt solid #111;
+  margin-top: 2pt;
+}
+.name i {
+  color: #444;
+  font-size: 8.5pt;
+}
+.caution {
+  display: inline-block;
+  font: 700 7pt/1.4 system-ui, sans-serif;
+  border: 1pt solid #111;
+  border-radius: 2pt;
+  padding: 0 3pt;
+  white-space: nowrap;
+}
+.tip {
+  margin-top: 1pt;
+}
+.pending .tip {
+  color: #8a8a8a;
+}
+.seen {
+  font-size: 7pt;
+  color: #555;
+}
+.extras {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 0.25in;
+  margin-top: 6pt;
+  break-inside: avoid;
+}
+.sketch {
+  border: 1pt dashed #555;
+  min-height: 1.35in;
+  padding: 3pt 5pt;
+}
+.sketch span,
+.notes span {
+  font: 700 7pt/1 system-ui, sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.notes i {
+  display: block;
+  height: 17pt;
+  border-bottom: 0.8pt solid #888;
+}
+.roomy .sketch {
+  min-height: 2.6in;
+}
+.roomy .notes i {
+  height: 26pt;
+}
+.card footer {
+  margin-top: 6pt;
+  padding-top: 4pt;
+  border-top: 0.8pt solid #888;
+  font-size: 6.8pt;
+  line-height: 1.35;
+  color: #333;
+}
+.card footer p + p {
+  margin-top: 2pt;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 20px 16px;
+  }
+  .lists {
+    columns: 1;
+  }
+  .extras {
+    grid-template-columns: 1fr;
+  }
+}
+
+@page {
+  margin: 0.4in;
+}
+@media print {
+  body {
+    background: #fff;
+  }
+  main {
+    max-width: none;
+    padding: 0;
+  }
+  .masthead,
+  form,
+  .progress,
+  #actions,
+  .about {
+    display: none !important;
+  }
+  .card {
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+  }
+  .lists {
+    columns: 2;
+  }
+  .extras {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
